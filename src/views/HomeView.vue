@@ -1,7 +1,5 @@
 <template>
-  <div>
-    home
-  </div>
+  <AButton type="link">button</AButton>
 </template>
 
 <script setup lang="ts"></script>
