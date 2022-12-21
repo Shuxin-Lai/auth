@@ -1,6 +1,6 @@
 import { projectSettings } from "@/settings/project_settings";
 import { useUserStore } from "@/stores/user";
-import { toBoolean } from "@/utils";
+import { isNil, toBoolean } from "@/utils";
 import { Modal } from "ant-design-vue";
 import type { Router } from "vue-router";
 import { ROUTE_NAME } from "./constant";
@@ -38,8 +38,38 @@ function createStateGuard(router: Router) {
   });
 }
 
+function createPermissionGuard(router: Router) {
+  const whiteList = [ROUTE_NAME.login, ROUTE_NAME.notFound];
+
+  router.beforeEach((to, from, next) => {
+    const name = (to.name || "") as string;
+    if (whiteList.includes(name)) {
+      return next();
+    }
+
+    const roles = to.meta?.roles;
+    if (!roles) {
+      return next();
+    }
+
+    const userStore = useUserStore();
+
+    if (isNil(userStore.user) || roles.includes(userStore.user.role)) {
+      return next({
+        name: ROUTE_NAME.login,
+        query: {
+          redirect: to.fullPath,
+        },
+      });
+    }
+
+    return next();
+  });
+}
+
 export function setupRouteGuard(router: Router) {
   createPageGuard(router);
   createMessageGuard(router);
   createStateGuard(router);
+  createPermissionGuard(router);
 }

@@ -26,21 +26,40 @@
       </a-form-item>
 
       <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
+        <a-button :loading="isLoading" type="primary" html-type="submit">Submit</a-button>
       </a-form-item>
     </a-form>
   </div>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+import { useMessage } from "@/hooks";
+import { useUserStore } from "@/stores/user";
+import { reactive, ref } from "vue";
+import { useRouter } from "vue-router";
 
+const userStore = useUserStore();
+const { notification } = useMessage();
+const { replace } = useRouter();
+
+const isLoading = ref(false);
 const formState = reactive({
   username: "",
   password: "",
 });
-const onFinish = (values: any) => {
-  console.log("Success:", values);
+
+const onFinish = async (values: any) => {
+  try {
+    isLoading.value = true;
+    await userStore.login(values);
+    notification.success({ message: "Success" });
+    replace({
+      path: "/",
+    });
+  } catch (err) {
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 const onFinishFailed = (errorInfo: any) => {

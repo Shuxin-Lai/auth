@@ -1,3 +1,4 @@
+import type { User } from "@/types";
 import { sleep } from "@/utils";
 
 const endpoints = {
@@ -10,5 +11,13 @@ export class UserApi {
     return {
       token: "fake_token",
     };
+  }
+
+  static async getUserInfo() {
+    const user: User = {
+      username: "fake name",
+    };
+
+    return user;
   }
 }

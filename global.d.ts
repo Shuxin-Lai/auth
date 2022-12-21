@@ -5,5 +5,5 @@ declare global {
   declare type NonNullable<T> = T extends null | undefined ? never : T;
   declare type Recordable<T = any> = Record<string, T>;
 
-  declare type Role = "admin" | "user";
+  declare type Role = "admin" | "user" | "visitor";
 }

@@ -1,19 +1,12 @@
 import type { AppRouteRecordRaw } from "@/types";
 import { ROUTE_NAME } from "./constant";
 
-export const views = {
-  exception: () => import("@/views/sys/exception/Error.vue"),
-  login: () => import("@/views/sys/login/Login.vue"),
-};
-
-export const layouts = {
-  default: () => import("@/layout/Default.vue"),
-};
+const defaultLayout = () => import("@/layout/Default.vue");
 
 export const pageNotFoundRoute: AppRouteRecordRaw = {
   path: "/:path(.*)*",
   name: ROUTE_NAME.notFound,
-  component: layouts.default,
+  component: defaultLayout,
   meta: {
     title: "ErrorPage",
     hideMenu: true,
@@ -21,7 +14,7 @@ export const pageNotFoundRoute: AppRouteRecordRaw = {
   children: [
     {
       path: "/:path(.*)*",
-      component: views.exception,
+      component: () => import("@/views/sys/exception/Error.vue"),
       name: ROUTE_NAME.notFound,
       meta: {
         title: "ErrorPage",
@@ -34,19 +27,33 @@ export const pageNotFoundRoute: AppRouteRecordRaw = {
 export const loginRoute: AppRouteRecordRaw = {
   name: ROUTE_NAME.login,
   path: "/login",
-  component: views.login,
+  component: () => import("@/views/sys/login/Login.vue"),
   meta: {
     title: "Login",
+    layout: false,
   },
 };
 
-export const homeRoute: AppRouteRecordRaw = {
-  name: "Home",
-  path: "/",
-  component: () => import("@/views/HomeView.vue"),
-  meta: {
-    title: "Home",
+export const authRoutes: AppRouteRecordRaw[] = [
+  {
+    name: ROUTE_NAME.home,
+    path: "/",
+    component: () => import("@/views/HomeView.vue"),
+    meta: {
+      title: "Home",
+      roles: ["user", "admin"],
+    },
   },
-};
 
-export const basicRoutes = [homeRoute, loginRoute, pageNotFoundRoute];
+  {
+    name: ROUTE_NAME.profile,
+    path: "/profile",
+    component: () => import("@/views/ProfileView.vue"),
+    meta: {
+      title: "Profile",
+      roles: ["user"],
+    },
+  },
+];
+
+export const basicRoutes = [...authRoutes, loginRoute, pageNotFoundRoute];

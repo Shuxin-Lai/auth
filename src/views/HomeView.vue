@@ -28,9 +28,7 @@ const set = () => {
   storage.set("test1", { name: "test1" });
 };
 
-const get = () => {
-  obj.value = storage.get("test1");
-};
+const get = () => {};
 </script>
 
 <style scoped></style>

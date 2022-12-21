@@ -17,6 +17,7 @@ declare module '@vue/runtime-core' {
     Error: typeof import('./src/views/sys/exception/Error.vue')['default']
     HomeView: typeof import('./src/views/HomeView.vue')['default']
     Login: typeof import('./src/views/sys/login/Login.vue')['default']
+    ProfileView: typeof import('./src/views/ProfileView.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

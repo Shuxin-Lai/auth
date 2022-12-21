@@ -4,6 +4,7 @@ declare module "vue-router" {
     orderNo?: number;
     // title
     title: string;
+    layout?: boolean | string | object | Function;
     // dynamic router level.
     dynamicLevel?: number;
     // dynamic router real route path (For performance).
