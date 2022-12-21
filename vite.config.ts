@@ -10,6 +10,8 @@ export default defineConfig({
   plugins: [
     vue(),
     Components({
+      dirs: ["src/components", "src/views"],
+      deep: true,
       dts: true,
       resolvers: [AntDesignVueResolver()],
     }),
